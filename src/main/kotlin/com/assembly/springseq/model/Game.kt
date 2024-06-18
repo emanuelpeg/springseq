@@ -1,40 +1,63 @@
 package com.assembly.springseq.model
 
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
 import kotlin.random.Random
 
+@Entity
 class Game {
 
+    @Id
     val id : java.util.UUID = java.util.UUID.randomUUID()
-    private var sequence = this.getSequence()
-    private var points: Int = 0
 
-    private fun getSequence() : Sequence {
-        val i = Random.nextInt(0,4)
-        return when (i) {
+    @Column
+    private var numbers = Array(4) { 0 }
+
+    @Column(name = "points")
+    private var points = 0
+
+    fun setNumbers() {
+        val i = Random.nextInt(0,7)
+        val sequence = when (i) {
             0 -> SequenceEven()
             1 -> SequencePow()
             2 -> SequenceFibbonacci()
+            3 -> SequenceLine()
+            4 -> SequenceLucca()
+            5 -> SequenceMultiple()
             else -> SequenceOdd()
         }
+        this.numbers = sequence.generateNumbers()
     }
 
     fun getPoints() = this.points
 
-    fun getOne() = sequence.getNumbers()[0]
+    fun getOne() = numbers[0]
 
-    fun getTwo() = sequence.getNumbers()[1]
+    fun getTwo() = numbers[1]
 
-    fun getFour() = sequence.getNumbers()[3]
+    private fun getTree() = numbers[2]
+
+    fun getFour() = numbers[3]
 
     fun isOk(nro : Int) : Boolean {
-        if (sequence.getNumbers()[2] == nro) {
+        if (getTree() == nro) {
             this.points++
-            this.sequence = this.getSequence()
+            this.setNumbers()
             return true
         } else {
             this.points--
-            this.sequence = this.getSequence()
+            this.setNumbers()
             return false
         }
+    }
+}
+
+object GameFactory {
+    fun create() : Game {
+        val game = Game()
+        game.setNumbers()
+        return game
     }
 }

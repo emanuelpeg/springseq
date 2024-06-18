@@ -2,6 +2,7 @@ package com.assembly.springseq.controllers
 
 import com.assembly.springseq.dto.ResultDTO
 import com.assembly.springseq.dto.SequenceDTO
+import com.assembly.springseq.model.exception.NotFoundException
 import com.assembly.springseq.service.GameService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -24,5 +25,10 @@ class GameController {
 
     @PostMapping("/isOk")
     fun isOk(@RequestHeader gameId : String, @RequestBody value : Int): ResponseEntity<ResultDTO> =
-        ResponseEntity.ok(gameService.isOk(UUID.fromString(gameId), value))
+        try {
+            ResponseEntity.ok(gameService.isOk(UUID.fromString(gameId), value))
+        } catch (e : NotFoundException) {
+            ResponseEntity.notFound().varyBy(e.msg).build()
+        }
+
 }
