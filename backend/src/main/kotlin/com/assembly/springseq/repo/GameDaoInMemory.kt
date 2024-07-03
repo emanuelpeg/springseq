@@ -4,6 +4,8 @@ import com.assembly.springseq.model.Game
 import com.assembly.springseq.model.GameFactory
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Repository
+import java.time.Instant
+import java.time.LocalDateTime
 import java.util.UUID
 
 @Repository
@@ -26,5 +28,10 @@ class GameDaoInMemory : GameDao {
 
     override fun save(game: Game) {
         repo[game.id] = game
+    }
+
+    override fun removeOldGames() {
+        val games = repo.filter { it.value.getCreationDate() < LocalDateTime.now().plusDays(-1) }
+        games.forEach { repo.remove(it.key) }
     }
 }

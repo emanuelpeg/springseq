@@ -1,7 +1,7 @@
 package com.assembly.springseq.repo
 
 import com.assembly.springseq.model.Game
-import java.util.*
+import java.util.UUID
 
 interface GameDao {
 
@@ -12,4 +12,6 @@ interface GameDao {
     fun exists(gameId: UUID): Boolean
 
     fun save(game: Game)
+
+    fun removeOldGames()
 }

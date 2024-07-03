@@ -23,6 +23,10 @@ class GameController {
     fun sequence(@RequestHeader gameId : String): ResponseEntity<SequenceDTO> =
         ResponseEntity.ok(gameService.getSequence(UUID.fromString(gameId)))
 
+    @GetMapping("/point")
+    fun point(@RequestHeader gameId : String): ResponseEntity<Int> =
+        ResponseEntity.ok(gameService.getPoints(UUID.fromString(gameId)))
+
     @PostMapping("/isOk")
     fun isOk(@RequestHeader gameId : String, @RequestBody value : Int): ResponseEntity<ResultDTO> =
         try {
@@ -30,5 +34,4 @@ class GameController {
         } catch (e : NotFoundException) {
             ResponseEntity.notFound().varyBy(e.msg).build()
         }
-
 }

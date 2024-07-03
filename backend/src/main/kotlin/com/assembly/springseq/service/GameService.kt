@@ -14,4 +14,5 @@ interface GameService {
     @Throws(NotFoundException::class)
     fun isOk(gameId : UUID, value: Int) : ResultDTO
 
+    fun getPoints(gameId : UUID) : Int
 }

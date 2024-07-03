@@ -3,6 +3,7 @@ package com.assembly.springseq.model
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import java.time.LocalDateTime
 import kotlin.random.Random
 
 @Entity
@@ -16,6 +17,9 @@ class Game {
 
     @Column(name = "points")
     private var points = 0
+
+    @Column(name = "creation_date")
+    private var creationDate: LocalDateTime = LocalDateTime.now()
 
     fun setNumbers() {
         val i = Random.nextInt(0,7)
@@ -52,6 +56,9 @@ class Game {
             return false
         }
     }
+
+    fun getCreationDate() = creationDate
+
 }
 
 object GameFactory {
